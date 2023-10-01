@@ -79,6 +79,54 @@ createServer({
             price: 1099.99,
             inStock: true,
         })
+        server.create("product", {
+            id: 11,
+            title: 'Lamp',
+            description: 'Brighten up your room',
+            url: 'lamp.jpg',
+            price: 39.99,
+            inStock: true,
+        })
+        server.create("product", {
+            id: 12,
+            title: 'Camera',
+            description: 'Capture your memories forever',
+            url: 'camera.jpg',
+            price: 129.50,
+            inStock: true,
+        })
+        server.create("product", {
+            id: 13,
+            title: 'Coffee machine',
+            description: 'The perfect way to start your day',
+            url: 'coffee-machine.jpg',
+            price: 149.99,
+            inStock: true,
+        })
+        server.create("product", {
+            id: 14,
+            title: 'Chair',
+            description: 'Stylish and comfortable',
+            url: 'chair.jpg',
+            price: 47.00,
+            inStock: false,
+        })
+        server.create("product", {
+            id: 15,
+            title: 'Smartphone',
+            description: 'Stay in touch with the world',
+            url: 'phone.jpg',
+            price: 479.99,
+            inStock: true,
+        })
+        server.create("product", {
+            id: 16,
+            title: 'Laptop',
+            description: 'Browse, work or play',
+            url: 'laptop.jpg',
+            price: 679.99,
+            inStock: true,
+        })
     },
 
     routes() {
