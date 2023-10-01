@@ -2,9 +2,12 @@ import React from "react";
 import Card from './Card';
 import Popup from './Popup';
 import SearchBar from './SearchBar';
+import { useSearchParams, useLocation } from "react-router-dom";
 
 export default function Store(props) {
-    const [sortValue, setSortValue] = React.useState('-');
+    const [searchParams, setSearchParams] = useSearchParams()
+    const location = useLocation();
+    const [sortValue, setSortValue] = React.useState('');
     const [hideOutOfStock, setHideOutOfStock] = React.useState(false);
     const [searchInput, setSearchInput] = React.useState('');
     const [items, setItems] = React.useState(props.originalProducts.map(product => (
@@ -26,13 +29,26 @@ export default function Store(props) {
         />
     )));
 
-    // React.useEffect(() => {
-    //     applyFilters();
-    // }, [])
+    function updateFiltersFromURL() {
+        const params = new URLSearchParams(location.search);
+        
+        const newSortValue = params.get('sort') || '';
+        const newHideOutOfStock = params.get('hideOutOfStock') === 'true';
+        const newSearchInput = params.get('search') || '';
+
+        setSortValue(newSortValue);
+        setHideOutOfStock(newHideOutOfStock);
+        setSearchInput(newSearchInput);
+    }
+
+    React.useEffect(() => {
+        updateFiltersFromURL();
+        applyFilters();
+    }, [location.search]);
 
     React.useEffect(() => {
         applyFilters();
-    }, [sortValue, hideOutOfStock, searchInput])
+    }, [sortValue, hideOutOfStock])
 
     React.useEffect(() => {
         setItems(props.products.map(product => (
@@ -50,7 +66,11 @@ export default function Store(props) {
             upQuantity = {props.upQuantity}
             downQuantity = {props.downQuantity}
             showPopup = {showPopup}
-            filters = {[sortValue, hideOutOfStock, searchInput]}
+            filters = {{
+                sort: sortValue, 
+                hideOutOfStock: hideOutOfStock, 
+                search: searchInput
+            }}
             />
         )))
     }, [props.products])
@@ -78,13 +98,16 @@ export default function Store(props) {
 
     function handleSortChange(e) {
         setSortValue(e.target.value);
+        handleFilterChange('sort', e.target.value)
     }
 
     function handleStockFilter(e) {
         if (e.target.checked === true) {
             setHideOutOfStock(true);
+            handleFilterChange('hideOutOfStock', 'true');
         } else if (e.target.checked === false) {
             setHideOutOfStock(false);
+            handleFilterChange('hideOutOfStock', null);
         }
     }
 
@@ -118,7 +141,7 @@ export default function Store(props) {
                     }
                 });
             });
-        } else if (sortValue === 'priceHighest') {
+        } else if (sortValue === 'priceHigh-Low') {
             props.setProducts(prevProducts => {
                     return prevProducts.sort(function (a, b) {
                     if (b.price < a.price) {
@@ -130,7 +153,7 @@ export default function Store(props) {
                     }
                     });
             });
-        } else if (sortValue === 'priceLowest') {
+        } else if (sortValue === 'priceLow-High') {
             props.setProducts(prevProducts => {
                 return prevProducts.sort(function (a, b) {
                     if (a.price < b.price) {
@@ -163,6 +186,17 @@ export default function Store(props) {
         }
     }
 
+    function handleFilterChange(key, value) {
+        setSearchParams(prevParams => {
+            if (value === null || value === '') {
+                prevParams.delete(key)
+            } else {
+                prevParams.set(key, value)
+            }
+            return prevParams
+        })
+    }
+
     return (
         <div>
             <div className="storeHeader">
@@ -174,6 +208,7 @@ export default function Store(props) {
                         applyFilters = {applyFilters}
                         searchInput = {searchInput}
                         setSearchInput = {setSearchInput}
+                        handleFilterChange = {handleFilterChange}
                     />
                     <div className="filter">
                         <label>Sort by:</label>
@@ -181,8 +216,8 @@ export default function Store(props) {
                             <option value="">-</option>
                             <option value="a-z">Product name A-Z</option>
                             <option value="z-a">Product name Z-A</option>
-                            <option value="priceLowest">Price ascending</option>
-                            <option value="priceHighest">Price descending</option>
+                            <option value="priceLow-High">Price ascending</option>
+                            <option value="priceHigh-Low">Price descending</option>
                         </select>
                     </div>
                     <div className="filter">

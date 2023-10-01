@@ -11,15 +11,17 @@ export default function CartCard(props) {
                 </div>
                 <p>{props.description}</p>
                 <div className='cart-quantity'>
-                    <button className='quantity-btn' onClick={() => {
-                        if (props.quantity > 1) {
-                            props.removeFromCart(props.id, 1)
-                        }
-                    }}>-</button>
-                    <p>{props.quantity}</p>
-                    <button className='quantity-btn' onClick={() => {
-                        props.addToCart(props, 1)
+                    <div className='quantity-controls'>
+                        <button className='quantity-btn' onClick={() => {
+                            if (props.quantity > 1) {
+                                props.removeFromCart(props.id, 1)
+                            }
+                        }}>-</button>
+                        <p className='quantity'>{props.quantity}</p>
+                        <button className='quantity-btn' onClick={() => {
+                            props.addToCart(props, 1)
                     }}>+</button>
+                    </div>
                     <p>Total price: £{props.quantity * props.price}</p>
                 </div>
                 <button 

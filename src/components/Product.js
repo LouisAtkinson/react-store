@@ -4,7 +4,6 @@ import { Link, useParams, useLocation } from 'react-router-dom';
 export default function Product(props) {
   const params = useParams();
   const location = useLocation();
-
   const [product, setProduct] = React.useState(null);
   const [quantity, setQuantity] = React.useState(1);
 
@@ -24,13 +23,23 @@ export default function Product(props) {
       .then(data => setProduct(data.products))
   }, [params.id]);
 
-  const search = location.state?.search || '';
-  const type = location.state?.type || 'all';
+  const filters = location.state?.filters;
+
+  function filtersToQueryString(filters) {
+    if (!filters) return '';
+    const queryString = Object.entries(filters)
+      .filter(([key, value]) => value !== null && value !== '' && value !== false)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&');
+    return queryString ? `?${queryString}` : '';
+  };
+
+  const queryString = filtersToQueryString(filters);
 
   return (
     <div className='product-detail-container'>
       <Link
-        to={`..${search}`}
+        to={`..${queryString}`}
         relative='path'
         className='back-button'
       >

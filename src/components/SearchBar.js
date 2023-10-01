@@ -6,12 +6,20 @@ export default function SearchBar(props) {
         props.setSearchInput(e.target.value);
     }
 
+    function applySearch() {
+        props.applyFilters();
+        props.handleFilterChange('search', props.searchInput)
+    }
+
     return (
-        <input
-            type="text"
-            placeholder="Search"
-            value={props.searchInput}
-            onChange={handleSearch}
-        />
-    )
+        <div className="search-bar">
+            <input
+                type="text"
+                placeholder="Search"
+                value={props.searchInput}
+                onChange={handleSearch}
+            />
+            <button onClick={applySearch}>Search</button>
+        </div>
+    );
 }
