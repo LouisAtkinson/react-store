@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { Link, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout.js';
 import Home from './components/Home.js';
 import Store from './components/Store.js';
@@ -83,20 +83,20 @@ function App() {
 
   function removeFromCart(id, quantity) {
     if (quantity) {
-      setCartContents(prevCartContents => {
-        for (let i = 0; i < prevCartContents.length; i++) {
-          return prevCartContents.map(item => {
-            if (item.id === id) {
-              let newQuantity = item.quantity - quantity;
-              if (newQuantity === 0) {
-                return null;
-              } else {
-                return { ...item, quantity: newQuantity};
-              }
+      setCartContents((prevCartContents) => {
+        const updatedCartContents = prevCartContents.map((item) => {
+          if (item.id === id) {
+            const newQuantity = quantity ? item.quantity - quantity : 0;
+            if (newQuantity === 0) {
+              return null;
+            } else {
+              return { ...item, quantity: newQuantity };
             }
-          }).filter(item => item !== null);
-        }
-      })
+          }
+          return item; 
+        });    
+        return updatedCartContents.filter((item) => item !== null);
+      });
     } else {
       setCartContents(prevCartContents => {
         const updatedCartContents = [...prevCartContents];

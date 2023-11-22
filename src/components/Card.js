@@ -47,7 +47,7 @@ export default function Card(props) {
         <button
           className='add-to-cart-btn'
           onClick={() => {
-            props.addToCart(props, quantity, true);
+            props.addToCart({...props, quantity: quantity}, quantity, true);
           }}
         >
           Add to cart

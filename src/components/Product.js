@@ -62,7 +62,7 @@ export default function Product(props) {
               </div>
               <button
                 onClick={() => {
-                  props.addToCart(product, quantity, true);
+                  props.addToCart({...product, quantity: quantity}, quantity, true);
                 }}
                 className='add-to-cart-button'
               >

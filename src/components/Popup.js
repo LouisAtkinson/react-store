@@ -5,7 +5,7 @@ export default function Popup(props) {
   const [isRemovedPopupVisible, setIsRemovedPopupVisible] = useState(false);
 
   useEffect(() => {
-    if (props.showPopup) {
+    if (props.showPopup && !isRemovedPopupVisible) {
       setIsVisible(true);
 
       const timeoutId = setTimeout(() => {
@@ -14,7 +14,7 @@ export default function Popup(props) {
 
       return () => clearTimeout(timeoutId);
     }
-  }, [props.showPopup]);
+  }, [props.showPopup, isRemovedPopupVisible]);
 
   const handleRemoveFromCart = () => {
     setIsVisible(false);
@@ -31,16 +31,17 @@ export default function Popup(props) {
       {isVisible ? (
         <div className="popup-content">
           <button className="close-button" onClick={() => setIsVisible(false)}>X</button>
-          <h4>Added to cart</h4> {/* New "Added to cart" text */}
+          <h4>Added to cart</h4> 
           <img className="popupImage" src={require(`../../public/images/${props.url}`)} alt={props.title} />
           <h3>{props.title}</h3>
-          <h4>£{props.price}</h4>
+          <h4>£{(props.price * props.quantity).toFixed(2)}</h4>
           <button onClick={handleRemoveFromCart} className="undo-button">
             Undo
           </button>
         </div>
       ) : isRemovedPopupVisible ? (
         <div className="popup-content removed-popup">
+          <button className="close-button" onClick={() => setIsRemovedPopupVisible(false)}>X</button>
           <div className="removed-message">
             Removed from cart
           </div>

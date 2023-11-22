@@ -132,6 +132,7 @@ main {
   font-size: 1.5rem;
   margin: 0;
   color: #333;
+  margin-right: 20px;
 }
 
 .storeFilters {
@@ -195,6 +196,14 @@ main {
     font-size: 1.2rem;
     margin-bottom: 10px;
   }
+
+  .storeFilters {
+    flex-direction: column;
+  }
+
+  .storeFilters > * {
+    margin-bottom: 10px;
+  }
 }
 
 .product-image img {
@@ -244,8 +253,8 @@ main {
 }
 
 .cart-image {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   margin-right: 10px;
 }
 
@@ -347,7 +356,7 @@ main {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.product-card:hover {
+.product-card:hover, .cart-card:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -578,7 +587,7 @@ main {
   cursor: pointer;
 }
 
-.undo-button:hover {
-  background-color: #ff5722;
+.undo-button:hover, .remove-button:hover {
+  background-color: #df3400;
 }
 

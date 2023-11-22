@@ -3,7 +3,7 @@ import React from 'react';
 export default function CartCard(props) {
     return (
         <div className='cart-card'>
-            <img className='cart-image' src={require(`../../public/images/${props.url}`)}/>
+            <img className='cart-image' src={require(`../../public/images/${props.url}`)} alt={props.title}/>
             <div className='cart-card-info'>
                 <div className='cart-card--top'>
                     <h3>{props.title}</h3>
@@ -22,7 +22,7 @@ export default function CartCard(props) {
                             props.addToCart(props, 1)
                     }}>+</button>
                     </div>
-                    <p>Total price: £{props.quantity * props.price}</p>
+                    <p>Total price: £{(props.quantity * props.price).toFixed(2)}</p>
                 </div>
                 <button 
                     onClick={() => props.removeFromCart(props.id)}
