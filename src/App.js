@@ -6,14 +6,13 @@ import Home from './components/Home.js';
 import Store from './components/Store.js';
 import Product from './components/Product.js';
 import Cart from './components/Cart.js';
-import Popup from './components/Popup.js'
 
 function App() {
   const [originalProducts, setOriginalProducts] = React.useState([]);
   const [products, setProducts] = React.useState([]);
   const [quantity, setQuantity] = React.useState(1);
   const [currentProduct, setCurrentProduct] = React.useState(null);
-  const [showPopup, setShowPopup] = React.useState(false);
+  const [addedToCartMap, setAddedToCartMap] = React.useState({});
 
   React.useEffect(() => {
     fetch("/api/products")
@@ -21,6 +20,11 @@ function App() {
         .then(data => {
           setProducts(data.products);
           setOriginalProducts(data.products);
+          const initialAddedToCartMap = data.products.reduce(
+            (map, product) => ({ ...map, [product.id]: false }),
+            {}
+          );
+          setAddedToCartMap(initialAddedToCartMap);
         })
   }, []);
 
@@ -35,24 +39,15 @@ function App() {
   }
 
   const [cartContents, setCartContents] = React.useState([])
+  const [cartItemCount, setCartItemCount] = React.useState(0);
 
-  let timeoutId; 
+  React.useEffect(() => {
+    const totalCount = cartContents.reduce((total, item) => total + item.quantity, 0);
+    setCartItemCount(totalCount);
+  }, [cartContents]);
 
-  function addToCart(props, quantity, doShowPopup) {
+  function addToCart(props, quantity) {
     setCurrentProduct(props);
-
-    if (doShowPopup) {
-      setShowPopup(true);
-    
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-        timeoutId = false;
-      }
-  
-      timeoutId = setTimeout(() => {
-        setShowPopup(false);
-      }, 3000);
-    }
 
     setCartContents(prevCartContents => {
       for (let i = 0; i < prevCartContents.length; i++) {
@@ -79,6 +74,20 @@ function App() {
 
       return [...prevCartContents, newProduct];
     });
+
+    setAddedToCartMap((prevMap) => {
+      const updatedMap = { ...prevMap };
+
+      updatedMap[props.id] = true;
+
+      Object.keys(updatedMap).forEach((productId) => {
+        if (productId !== props.id) {
+          updatedMap[productId] = false;
+        }
+      });
+
+      return updatedMap;
+    });  
   }
 
   function removeFromCart(id, quantity) {
@@ -105,12 +114,26 @@ function App() {
         return updatedCartContents;
       })
     }
+
+    resetAddedToCartMap();
+  }
+
+  function resetAddedToCartMap() {
+    setAddedToCartMap((prevMap) => {
+      const updatedMap = {};
+    
+      Object.keys(prevMap).forEach((productId) => {
+        updatedMap[productId] = false;
+      });
+    
+      return updatedMap;
+    });
   }
 
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Layout cartItemCount={cartItemCount}/>}>
           <Route index element={<Home />} />
           <Route path="/store" element={
             <Store 
@@ -122,7 +145,8 @@ function App() {
               quantity={quantity}
               downQuantity={downQuantity}
               upQuantity={upQuantity}
-              showPopup={showPopup}
+              addedToCartMap={addedToCartMap}
+              resetAddedToCartMap={resetAddedToCartMap}
             />} 
           />
           <Route path="/store/:id" element={
@@ -130,7 +154,8 @@ function App() {
               setProducts={setProducts}
               addToCart={addToCart}
               removeFromCart={removeFromCart}
-              showPopup={showPopup}
+              addedToCartMap={addedToCartMap}
+              resetAddedToCartMap={resetAddedToCartMap}
             />}
           />
           <Route path="/cart" element={
@@ -143,20 +168,6 @@ function App() {
           />
         </Route>
       </Routes>
-      {showPopup && currentProduct && (
-        <Popup 
-          showPopup={showPopup} 
-          setShowPopup={setShowPopup}
-          url={currentProduct.url}
-          id={currentProduct.id}
-          title={currentProduct.title}
-          price={currentProduct.price}
-          quantity={currentProduct.quantity}
-          downQuantity={downQuantity}
-          upQuantity={upQuantity}
-          removeFromCart={removeFromCart}
-        />
-      )}
     </div>
   );
 }

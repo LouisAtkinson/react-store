@@ -1,6 +1,5 @@
 import React from "react";
 import Card from './Card';
-import Popup from './Popup';
 import SearchBar from './SearchBar';
 import { useSearchParams, useLocation } from "react-router-dom";
 
@@ -10,6 +9,7 @@ export default function Store(props) {
     const [sortValue, setSortValue] = React.useState('');
     const [hideOutOfStock, setHideOutOfStock] = React.useState(false);
     const [searchInput, setSearchInput] = React.useState('');
+
     const [items, setItems] = React.useState(props.originalProducts.map(product => (
         <Card
         key = {product.id}
@@ -24,8 +24,8 @@ export default function Store(props) {
         quantity = {props.quantity}
         upQuantity = {props.upQuantity}
         downQuantity = {props.downQuantity}
-        showPopup = {props.showPopup}
         filters = {[sortValue, hideOutOfStock, searchInput]}
+        addedToCart={props.addedToCartMap[product.id]}
         />
     )));
 
@@ -65,36 +65,19 @@ export default function Store(props) {
             quantity = {props.quantity}
             upQuantity = {props.upQuantity}
             downQuantity = {props.downQuantity}
-            showPopup = {showPopup}
             filters = {{
                 sort: sortValue, 
                 hideOutOfStock: hideOutOfStock, 
                 search: searchInput
             }}
+            addedToCart={props.addedToCartMap[product.id]}
             />
         )))
-    }, [props.products])
+    }, [props.products, props.addedToCartMap])
 
-    function showPopup(id, quantity) {
-        for (let i = 0; i < props.products.length; i++) {
-            if (props.products[i].id = id) {
-                let product = props.products[i];
-                return (
-                    <Popup
-                        key = {product.id}
-                        id = {product.id}
-                        title = {product.title}
-                        url = {product.url}
-                        quantity = {quantity}
-                        price = {product.price}
-                        removeFromCart = {props.removeFromCart}
-                        upQuantity = {props.upQuantity}
-                        downQuantity = {props.downQuantity}
-                    />
-                )
-            }
-        }
-    }
+    React.useEffect(() => {
+        props.resetAddedToCartMap();
+    }, [])
 
     function handleSortChange(e) {
         setSortValue(e.target.value);

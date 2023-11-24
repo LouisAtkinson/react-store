@@ -6,6 +6,7 @@ export default function Product(props) {
   const location = useLocation();
   const [product, setProduct] = React.useState(null);
   const [quantity, setQuantity] = React.useState(1);
+  const [addedToCart, setAddedToCart] = React.useState(false);
 
   function downQuantity() {
     if (quantity > 1) {
@@ -22,6 +23,14 @@ export default function Product(props) {
       .then(res => res.json())
       .then(data => setProduct(data.products))
   }, [params.id]);
+
+  React.useEffect(() => {
+    setAddedToCart(props.addedToCartMap[params.id] || false);
+  }, [params.id, props.addedToCartMap]);
+
+  React.useEffect(() => {
+    props.resetAddedToCartMap();
+  }, []) 
 
   const filters = location.state?.filters;
 
@@ -62,7 +71,7 @@ export default function Product(props) {
               </div>
               <button
                 onClick={() => {
-                  props.addToCart({...product, quantity: quantity}, quantity, true);
+                  props.addToCart({...product, quantity: quantity}, quantity);
                 }}
                 className='add-to-cart-button'
               >
@@ -72,6 +81,19 @@ export default function Product(props) {
           ) : (
             <p className='out-of-stock-text'>OUT OF STOCK</p>
           )}
+          
+          {addedToCart && (
+            <div className='added-to-cart-message-container'>
+              <p className='added-to-cart-message'>Added to cart</p>
+              <button
+                className='remove-button'
+                onClick={() => props.removeFromCart(props.id, quantity)}
+              >
+                Undo
+              </button>
+            </div>
+          )}
+          
         </div>
       ) : <h2>Loading...</h2>}
     </div>

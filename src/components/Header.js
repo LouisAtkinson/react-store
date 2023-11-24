@@ -2,7 +2,7 @@ import React from "react"
 import { NavLink } from "react-router-dom"
 import {ReactComponent as ReactLogo} from '../logo.svg';
 
-export default function Header() {
+export default function Header(props) {
     const activeStyle = {
         fontWeight: "bold",
         textDecoration: "underline",
@@ -24,10 +24,10 @@ export default function Header() {
                     to="/store"
                     style={({isActive}) => isActive ? activeStyle : null}
                 >Store</NavLink>
-                <NavLink 
-                    to="/cart"
-                    style={({isActive}) => isActive ? activeStyle : null}
-                >Cart</NavLink>
+                <NavLink to="/cart" style={({ isActive }) => isActive ? activeStyle : null}>
+                    Cart
+                    <div className="cart-bubble">{props.cartItemCount}</div>
+                </NavLink>
             </nav>
         </header>
     )

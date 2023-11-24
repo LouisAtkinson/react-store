@@ -44,14 +44,27 @@ export default function Card(props) {
         <p className='total-price'>Total price: £{props.price * quantity}</p>
       )}
       {props.inStock ? (
-        <button
-          className='add-to-cart-btn'
-          onClick={() => {
-            props.addToCart({...props, quantity: quantity}, quantity, true);
-          }}
-        >
-          Add to cart
-        </button>
+        <div className='add-to-cart-container'>
+          <button
+            className='add-to-cart-btn'
+            onClick={() => {
+              props.addToCart({...props, quantity: quantity}, quantity);
+            }}
+          >
+            Add to cart
+          </button>
+          {props.addedToCart && (
+            <div className='added-to-cart-message-container'>
+              <p className='added-to-cart-message'>Added to cart</p>
+              <button
+                className='remove-button'
+                onClick={() => props.removeFromCart(props.id, quantity)}
+              >
+                Undo
+              </button>
+            </div>
+          )}
+        </div>
       ) : null}
     </div>
   )
