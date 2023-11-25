@@ -29,3 +29,11 @@ Photo by <a href="https://unsplash.com/@gmk?utm_source=unsplash&utm_medium=refer
   Photo by Designecologist: https://www.pexels.com/photo/image-of-river-on-smartphone-1398339/
 
   Photo by Anna Shvets: https://www.pexels.com/photo/potted-plants-beside-white-and-brown-folding-chair-3771691/
+
+  Photo by Karolina Grabowska: https://www.pexels.com/photo/a-blue-and-black-calculator-on-light-green-surface-5412194/
+
+  Photo by cottonbro studio: https://www.pexels.com/photo/a-tennis-racket-and-a-tennis-ball-5741292/
+
+  Photo by Antonio Jose Meza Cárdenas: https://www.pexels.com/photo/blue-margarita-with-lemon-2480828/
+
+  Photo by eberhard grossgasteiger: https://www.pexels.com/photo/teal-and-pink-cherry-print-garment-2086361/

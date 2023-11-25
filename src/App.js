@@ -38,12 +38,16 @@ function App() {
     setQuantity(prevQuantity => prevQuantity + 1);
   }
 
-  const [cartContents, setCartContents] = React.useState([])
+  const [cartContents, setCartContents] = React.useState(() => {
+    const storedCartContents = JSON.parse(localStorage.getItem('cartContents'));
+    return storedCartContents || [];
+  });  
   const [cartItemCount, setCartItemCount] = React.useState(0);
 
   React.useEffect(() => {
     const totalCount = cartContents.reduce((total, item) => total + item.quantity, 0);
     setCartItemCount(totalCount);
+    localStorage.setItem('cartContents', JSON.stringify(cartContents));
   }, [cartContents]);
 
   function addToCart(props, quantity) {

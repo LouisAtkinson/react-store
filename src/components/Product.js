@@ -7,6 +7,7 @@ export default function Product(props) {
   const [product, setProduct] = React.useState(null);
   const [quantity, setQuantity] = React.useState(1);
   const [addedToCart, setAddedToCart] = React.useState(false);
+  const [isPulsing, setIsPulsing] = React.useState(false);
 
   function downQuantity() {
     if (quantity > 1) {
@@ -36,14 +37,40 @@ export default function Product(props) {
 
   function filtersToQueryString(filters) {
     if (!filters) return '';
-    const queryString = Object.entries(filters)
-      .filter(([key, value]) => value !== null && value !== '' && value !== false)
+  
+    const nonDefaultFilters = Object.entries(filters)
+      .filter(([key, value]) => {
+        return (
+          (key !== 'itemsPerPage' || value !== 10) &&
+          (key !== 'page' || value !== 1) &&
+          (key !== 'hideOutOfStock' || value !== false) &&
+          value !== null &&
+          value !== ''
+        );
+      })
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&');
-    return queryString ? `?${queryString}` : '';
-  };
+  
+    return nonDefaultFilters ? `?${nonDefaultFilters}` : '';
+  }
 
   const queryString = filtersToQueryString(filters);
+
+  function handleAddToCartClick() {
+    if (isPulsing) {
+      setIsPulsing(false);
+      setTimeout(() => {
+        setIsPulsing(true);
+      }, 0);
+    } else {
+      setIsPulsing(true);
+    }
+    props.addToCart({...product, quantity: quantity}, quantity);
+  }
+
+  function handleAnimationEnd() {
+    setIsPulsing(false);
+  }
 
   return (
     <div className='product-detail-container'>
@@ -64,18 +91,21 @@ export default function Product(props) {
           {product.inStock ? (
             <div className='product-card-bottom'>
               <div className='quantity'>
-                <button className='quantity-btn' onClick={downQuantity}>-</button>
+                <button 
+                  className={`quantity-btn ${props.quantity === 1 ? 'disabled' : ''}`}
+                  onClick={downQuantity}>
+                  -
+                </button>
                 {quantity}
                 <button className='quantity-btn' onClick={upQuantity}>+</button>
-                {quantity > 1 ? `Total price: £${product.price * quantity}` : ''}
+                {quantity > 1 ? `Total price: £${(product.price * quantity).toFixed(2)}` : ''}
               </div>
               <button
-                onClick={() => {
-                  props.addToCart({...product, quantity: quantity}, quantity);
-                }}
-                className='add-to-cart-button'
+                className={`add-to-cart-btn ${isPulsing ? 'pulse' : ''}`}
+                onClick={handleAddToCartClick}
+                onAnimationEnd={handleAnimationEnd}
               >
-                Add to Cart
+                Add to cart
               </button>
             </div>
           ) : (

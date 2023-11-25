@@ -7,12 +7,14 @@ export default function CartCard(props) {
             <div className='cart-card-info'>
                 <div className='cart-card--top'>
                     <h3>{props.title}</h3>
-                    <h4>£{props.price}</h4>
+                    <h4>£{props.price.toFixed(2)}</h4>
                 </div>
                 <p>{props.description}</p>
                 <div className='cart-quantity'>
                     <div className='quantity-controls'>
-                        <button className='quantity-btn' onClick={() => {
+                        <button 
+                            className={`quantity-btn ${props.quantity === 1 ? 'disabled' : ''}`} 
+                            onClick={() => {
                             if (props.quantity > 1) {
                                 props.removeFromCart(props.id, 1)
                             }
