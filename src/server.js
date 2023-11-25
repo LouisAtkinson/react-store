@@ -56,6 +56,14 @@ createServer({
             inStock: true,
         })
         server.create("product", {
+            id: 7,
+            title: 'Watch',
+            description: 'Beautifully crafted',
+            url: 'watch.jpg',
+            price: 250.00,
+            inStock: false,
+        })
+        server.create("product", {
             id: 8,
             title: 'Bicycle',
             description: 'Perfect for city commutes or countryside adventures',
@@ -125,6 +133,38 @@ createServer({
             description: 'Browse, work or play',
             url: 'laptop.jpg',
             price: 679.99,
+            inStock: true,
+        })
+        server.create("product", {
+            id: 17,
+            title: 'Calculator',
+            description: 'Simple and functional',
+            url: 'calculator.jpg',
+            price: 5.99,
+            inStock: true,
+        })
+        server.create("product", {
+            id: 18,
+            title: 'Tennis racket',
+            description: 'Comes with ball',
+            url: 'tennis-racket.jpg',
+            price: 32.50,
+            inStock: true,
+        })
+        server.create("product", {
+            id: 19,
+            title: 'Cocktail glass',
+            description: 'Sleek and stylish',
+            url: 'cocktail-glass.jpg',
+            price: 3.99,
+            inStock: true,
+        })
+        server.create("product", {
+            id: 20,
+            title: 'Painting',
+            description: 'Brighten up your home with art',
+            url: 'painting.jpg',
+            price: 139.99,
             inStock: true,
         })
     },
