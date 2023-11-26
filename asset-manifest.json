@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/react-store/static/css/main.04a45d8b.css",
-    "main.js": "/react-store/static/js/main.375a1ba0.js",
+    "main.js": "/react-store/static/js/main.a2cd099c.js",
     "static/js/787.d6fe38e8.chunk.js": "/react-store/static/js/787.d6fe38e8.chunk.js",
     "static/media/lamp.jpg": "/react-store/static/media/lamp.1bbca28fa47800f4204e.jpg",
     "static/media/chair.jpg": "/react-store/static/media/chair.8feb37be1e524f881dbf.jpg",
@@ -26,11 +26,11 @@
     "static/media/logo.svg": "/react-store/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/react-store/index.html",
     "main.04a45d8b.css.map": "/react-store/static/css/main.04a45d8b.css.map",
-    "main.375a1ba0.js.map": "/react-store/static/js/main.375a1ba0.js.map",
+    "main.a2cd099c.js.map": "/react-store/static/js/main.a2cd099c.js.map",
     "787.d6fe38e8.chunk.js.map": "/react-store/static/js/787.d6fe38e8.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.04a45d8b.css",
-    "static/js/main.375a1ba0.js"
+    "static/js/main.a2cd099c.js"
   ]
 }
