@@ -5,11 +5,11 @@ export default function CartCard(props) {
         <div className='cart-card'>
             <img className='cart-image' src={require(`../../public/images/${props.url}`)} alt={props.title}/>
             <div className='cart-card-info'>
-                <div className='cart-card--top'>
+                <div className='cart-card-top'>
                     <h3>{props.title}</h3>
                     <h4>£{props.price.toFixed(2)}</h4>
                 </div>
-                <p>{props.description}</p>
+                <p className='cart-description'>{props.description}</p>
                 <div className='cart-quantity'>
                     <div className='quantity-controls'>
                         <button 
@@ -22,9 +22,9 @@ export default function CartCard(props) {
                         <p className='quantity'>{props.quantity}</p>
                         <button className='quantity-btn' onClick={() => {
                             props.addToCart(props, 1)
-                    }}>+</button>
+                        }}>+</button>
                     </div>
-                    <p>Total price: £{(props.quantity * props.price).toFixed(2)}</p>
+                    <p className='cart-card-total'>Total price: £{(props.quantity * props.price).toFixed(2)}</p>
                 </div>
                 <button 
                     onClick={() => props.removeFromCart(props.id)}
